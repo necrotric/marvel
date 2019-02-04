@@ -31,24 +31,19 @@ object ApiService {
         return System.currentTimeMillis().toString()
     }
 
-    fun chooseReq(reqType: String, search:String=""): Array<*>? {
-
-
+    fun heroApiRequest(search:String="A"): Array<*>? {
         val time = getNow()
         val hash = Constant().calcHash(time)
         var apiResult:Array<*>? = null
 
+        service.getCharacters(time, pubKey, hash, search,30).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
 
-        when (reqType) {
-//            "series" -> {
-//                service.getSeries(time, pubKey, hash).subscribeOn(Schedulers.io()).subscribe { wrapper -> ar = wrapper.data.results }
-//            }
-            "heroesSearch" -> {
-                service.getCharacters(time, pubKey, hash,search).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
-            }
-        }
-        while (apiResult == null || apiResult!!.isEmpty())
+
+
+        while(apiResult == null || apiResult!!.isEmpty()){
+            //If to much data is loaded app crash anyway.
             Thread.sleep(5)
+        }
         return apiResult
     }
 

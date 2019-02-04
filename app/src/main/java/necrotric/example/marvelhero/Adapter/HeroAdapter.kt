@@ -22,11 +22,24 @@ class HeroAdapter(context: Context, heroes: ArrayList<Hero>) : BaseAdapter() {
     val heroes = heroes
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val heroView: View
-        heroView = LayoutInflater.from(context).inflate(R.layout.hero_list_item, null)
-//        val heroImage : ImageView = heroView.findViewById(R.id.heroListImage)
-        val heroDescription : TextView = heroView.findViewById(R.id.heroListDescrption)
-        val heroName : TextView = heroView.findViewById(R.id.heroListName)
-        val heroImage : ImageView = heroView.findViewById(R.id.heroListImage)
+        val holder: ViewHolder
+
+        if(convertView == null){
+            heroView = LayoutInflater.from(context).inflate(R.layout.hero_list_item, null)
+            holder = ViewHolder()
+            holder.heroDescription = heroView.findViewById(R.id.heroListDescrption)
+            holder.heroName = heroView.findViewById(R.id.heroListName)
+            holder.heroImage = heroView.findViewById(R.id.heroListImage)
+
+            heroView.tag = holder
+            println("I Exist the first time")
+        } else {
+            holder = convertView.tag as ViewHolder
+            heroView = convertView
+            println("Recycling view")
+        }
+
+
 
         val hero = heroes[position]
 
@@ -34,10 +47,10 @@ class HeroAdapter(context: Context, heroes: ArrayList<Hero>) : BaseAdapter() {
         val path = hero.thumbnail.path.toString()
         val aspectRatio = "portrait_xlarge"
 
-        heroName.text = hero.name
-        heroDescription.text = hero.description
+        holder.heroName?.text = hero.name
+        holder.heroDescription?.text = hero.description
         val imageBuild = path+"/"+aspectRatio+"."+extension
-        Picasso.get().load(imageBuild).into(heroImage)
+        Picasso.get().load(imageBuild).into(holder.heroImage)
 
 //        val newurl = URL(imageBuild)
 //        val mIconval = BitmapFactory.decodeStream(newurl.openConnection().getInputStream())
@@ -59,4 +72,11 @@ class HeroAdapter(context: Context, heroes: ArrayList<Hero>) : BaseAdapter() {
     override fun getCount(): Int {
         return heroes.count()
     }
+    private class ViewHolder{
+        var heroDescription: TextView? = null
+        var heroName: TextView? = null
+        var heroImage: ImageView? = null
+
+    }
+
 }

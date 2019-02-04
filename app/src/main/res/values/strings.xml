@@ -1,5 +1,8 @@
 <resources>
+
     <string name="app_name">Marvelhero</string>
+    <string name="selected_item">Selected item:</string>
+
     <string name="search_for_marvel_heros">Search for Marvel Heros</string>
     <string name="textview">TextView</string>
 </resources>

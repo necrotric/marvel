@@ -3,15 +3,13 @@ package necrotric.example.marvelhero.Controller
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import necrotric.example.marvelhero.Adapter.HeroAdapter
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
 import necrotric.example.marvelhero.Services.ApiService
 
-
+//MAIN TODO make navbar before this (currently hero search)
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,41 +25,48 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        mainSearchBtn.setOnClickListener {
-            characterList.removeAll(characterList)
-            characterList = ArrayList()
-            val searchText = mainSearchField.text.toString()
-//            if(searchText.startsWith(matchText)){
+//        mainSearchBtn.setOnClickListener {
+//            characterList.removeAll(characterList)
+//            characterList = ArrayList()
+//            val heroSearch = mainSearchField.text.toString()
+////            if(searchText.startsWith(matchText)){
+////
+////            }
+////            println("MATCHING TEXT " +matchText)
+//            val heroes = ApiService.heroApiRequest(heroSearch.toString())
+//            if(heroes != null){
+//                println("heroes is nothing")
+//
+//            for (h in heroes!!) {
+//                h as Hero
+//                println("descrption" + h.description)
+//
+//                characterList.add(h)
 //
 //            }
-//            println("MATCHING TEXT " +matchText)
-            val heroes = ApiService.chooseReq("heroesSearch", searchText.toString())
-            for (h in heroes!!) {
-                h as Hero
-                println("descrption" + h.description)
-
-                characterList.add(h)
-
-            }
-            for(anotherHero in characterList){
-                println("Name: " + anotherHero.thumbnail.extension)
-
-//                println("Series: " +anotherHero.series.items.size)
-//                for(comics in anotherHero.series.items){
-//                    println("Series name:                 " + comics.name)
-//                }
-
-            }
-            adapter = HeroAdapter(this, characterList)
-
-            heroListView.adapter = adapter
-        }
-
-
-        println("CHARACTER SIZE OUTSIDE OF everything " + characterList.size)
-
-
-
+//            for(anotherHero in characterList){
+//                println("Name: " + anotherHero.thumbnail.extension)
+//
+////                println("Series: " +anotherHero.series.items.size)
+////                for(comics in anotherHero.series.items){
+////                    println("Series name:                 " + comics.name)
+////                }
+//
+//            }
+//            if(characterList.size>1){
+//
+//                adapter = HeroAdapter(this, characterList)
+//
+//                heroListView.adapter = adapter
+//            }
+//            }
+//        }
+//
+//
+//        println("CHARACTER SIZE OUTSIDE OF everything " + characterList.size)
+//
+//
+//
 
 
     }
