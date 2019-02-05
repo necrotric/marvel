@@ -30,22 +30,35 @@ object ApiService {
     private fun getNow(): String {
         return System.currentTimeMillis().toString()
     }
+    fun oneHero(id: Int): Array<*>?{
+        val time = getNow()
+        val hash = Constant().calcHash(time)
+        var apiResult:Array<*>? = null
+
+        service.getCharactersById(id,time, pubKey,hash ).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
+
+        while (apiResult == null) {
+            //If to much data is loaded app crash anyway.bat
+            Thread.sleep(100)
+            println("IM CRASHING")
+        }
+        return apiResult
+
+    }
 
     fun heroApiRequest(search:String="A"): Array<*>? {
         val time = getNow()
         val hash = Constant().calcHash(time)
         var apiResult:Array<*>? = null
 
-        service.getCharacters(time, pubKey, hash, search,30).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
+        service.getCharacters(time, pubKey, hash, search,10).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
 
 
-
-        while(apiResult == null || apiResult!!.isEmpty()){
-            //If to much data is loaded app crash anyway.
-            Thread.sleep(5)
-        }
+            while (apiResult == null) {
+                //If to much data is loaded app crash anyway.bat
+                Thread.sleep(100)
+                println("IM CRASHING")
+            }
         return apiResult
     }
-
-
 }

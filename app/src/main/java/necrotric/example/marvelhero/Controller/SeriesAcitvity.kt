@@ -7,13 +7,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_series_acitvity.*
+import kotlinx.android.synthetic.main.activity_hero_browse.*
 import necrotric.example.marvelhero.Adapter.HeroAdapter
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
 import necrotric.example.marvelhero.Services.ApiService
-import kotlin.concurrent.thread
 
 
 class SeriesAcitvity : AppCompatActivity() {
@@ -23,7 +21,7 @@ class SeriesAcitvity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_series_acitvity)
+        setContentView(R.layout.activity_hero_browse)
 
         val personNames = arrayOf(
             "A",
