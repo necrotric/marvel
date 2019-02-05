@@ -14,7 +14,7 @@ import necrotric.example.marvelhero.R
 import necrotric.example.marvelhero.Services.ApiService
 
 
-class SeriesAcitvity : AppCompatActivity() {
+class HeroBrowseActivity : AppCompatActivity() {
 
     lateinit var adapter: HeroAdapter
     var characterList = ArrayList<Hero>()
@@ -59,7 +59,7 @@ class SeriesAcitvity : AppCompatActivity() {
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     Toast.makeText(
-                        this@SeriesAcitvity,
+                        this@HeroBrowseActivity,
                         getString(R.string.selected_item) + " " + personNames[position],
                         Toast.LENGTH_SHORT
                     ).show()
@@ -87,7 +87,7 @@ class SeriesAcitvity : AppCompatActivity() {
                     }
                     if (characterList.size > 1) {
 
-                        adapter = HeroAdapter(this@SeriesAcitvity, characterList)
+                        adapter = HeroAdapter(this@HeroBrowseActivity, characterList)
 
                         heroListView.adapter = adapter
 

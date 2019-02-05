@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 import necrotric.example.marvelhero.Adapter.HeroAdapter
 import necrotric.example.marvelhero.Models.Hero
-import necrotric.example.marvelhero.Models.Urls
 import necrotric.example.marvelhero.R
 import necrotric.example.marvelhero.Services.ApiService
 
@@ -16,8 +15,9 @@ import necrotric.example.marvelhero.Services.ApiService
 
 
 class MainActivity : AppCompatActivity() {
-   lateinit var adapter : HeroAdapter
+    lateinit var adapter: HeroAdapter
     var characterList = ArrayList<Hero>()
+    var count = 0
     //    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
 //        super.onSaveInstanceState(outState, outPersistentState)
 //
@@ -27,62 +27,87 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-
+        var heroSearch = mainSearchField.text.toString()
         mainSearchBtn.setOnClickListener {
-            characterList.removeAll(characterList)
-            characterList = ArrayList()
-            val heroSearch = mainSearchField.text.toString()
+            count = 0
+            characterList = heroApiMethod(count)
+                if (characterList.size > 1) {
 
-            val heroes = ApiService.heroApiRequest(heroSearch.toString())
-            println(heroes.isNullOrEmpty())
-            if(heroes != null){
-                println("heroes is nothing")
+                    adapter = HeroAdapter(this, characterList)
+                    heroListView.adapter = adapter
 
-            for (h in heroes!!) {
-                h as Hero
-              //  println("URL" + h.urls[0].url.toString())
-
-//                for(links in h.urls){
-//                    println("Type: "+ links.type  + "Link: " + links.url)
-//                }
-
-                characterList.add(h)
-
+                    heroListView.setOnItemClickListener { parent, view, position, id ->
+                        val pos = characterList[position].id.toString()
+                        val heroInfo = Intent(this, HeroMoreInfo::class.java)
+                        heroInfo.putExtra("SEARCH_VALUE", pos)
+                        startActivity(heroInfo);
+                        println(pos.toString())
+                    }
             }
-            for(anotherHero in characterList){
-                println("Name: " + anotherHero.thumbnail.extension)
-
-//                println("Series: " +anotherHero.series.items.size)
-//                for(comics in anotherHero.series.items){
-//                    println("Series name:                 " + comics.name)
-//                }
-
-            }
-            if(characterList.size>1){
+        }
+        mainNextBtn.setOnClickListener{
+            count += 10
+            characterList = heroApiMethod(count)
+            if (characterList.size > 1) {
 
                 adapter = HeroAdapter(this, characterList)
                 heroListView.adapter = adapter
-                
+
                 heroListView.setOnItemClickListener { parent, view, position, id ->
-                    val random = characterList[position].id.toString()
+                    val pos = characterList[position].id.toString()
                     val heroInfo = Intent(this, HeroMoreInfo::class.java)
-                    heroInfo.putExtra("SEARCH_VALUE", random)
+                    heroInfo.putExtra("SEARCH_VALUE", pos)
                     startActivity(heroInfo);
-                    println(random.toString())
+                    println(pos.toString())
                 }
-            }
+            } else {
+                count-=10
             }
         }
-//
-//
-//        println("CHARACTER SIZE OUTSIDE OF everything " + characterList.size)
-//
-//
-//
+        mainBackBtn.setOnClickListener{
+            if(count>=10){
+                count -= 10
+            }
 
+            characterList = heroApiMethod(count)
+            if (characterList.size > 1) {
+
+                adapter = HeroAdapter(this, characterList)
+                heroListView.adapter = adapter
+
+                heroListView.setOnItemClickListener { parent, view, position, id ->
+                    val pos = characterList[position].id.toString()
+                    val heroInfo = Intent(this, HeroMoreInfo::class.java)
+                    heroInfo.putExtra("SEARCH_VALUE", pos)
+                    startActivity(heroInfo);
+                    println(pos.toString())
+                }
+            } else {
+                count+=10
+            }
+        }
 
     }
+
+    fun heroApiMethod(count: Int): ArrayList<Hero> {
+        var newCharacterList = ArrayList<Hero>()
+        newCharacterList = ArrayList()
+
+
+        val heroes = ApiService.heroApiRequest(mainSearchField.text.toString(),count)
+        println(heroes.isNullOrEmpty())
+        if (heroes != null) {
+            println("Heroes exist")
+            for (h in heroes!!) {
+                h as Hero
+                newCharacterList.add(h)
+            }
+        }
+        return newCharacterList
+    }
+
 }
+
 
 //Take the path element: http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73
 //Select an image variant name (see the full list below) and append the variant name to the path element: http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_xlarge

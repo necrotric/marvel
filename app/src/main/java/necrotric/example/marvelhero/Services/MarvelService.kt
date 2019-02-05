@@ -14,6 +14,7 @@ interface MarvelService {
                       @Query("apikey") apikey: String,
                       @Query("hash") hash: String,
                       @Query("nameStartsWith") nameStartsWith: String,
+                      @Query("offset") offset: Int,
                       @Query("limit") limit: Int): Single<Api<Array<Hero>>>
 
 
@@ -22,4 +23,13 @@ interface MarvelService {
                           @Query("ts") ts: String,
                           @Query("apikey") apikey: String,
                           @Query("hash") hash: String): Single<Api<Array<Hero>>>
+
+
+    @GET("/v1/public/series")
+    fun getSeries(@Query("ts") ts: String,
+                  @Query("apikey") apikey: String,
+                  @Query("hash") hash: String,
+                  @Query("limit") limit: Int,
+                  @Query("offset") offset: Int,
+                  @Query("titleStartsWith") titleStartsWith: String): Single<Api<Array<Series>>>
 }
