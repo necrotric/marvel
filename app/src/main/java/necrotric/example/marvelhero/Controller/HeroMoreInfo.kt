@@ -3,9 +3,9 @@ package necrotric.example.marvelhero.Controller
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_hero_more_info.*
 import necrotric.example.marvelhero.Models.Hero
-import necrotric.example.marvelhero.Models.Heroes
 import necrotric.example.marvelhero.Models.Items
 import necrotric.example.marvelhero.Models.Urls
 import necrotric.example.marvelhero.R
@@ -21,15 +21,22 @@ class HeroMoreInfo : AppCompatActivity() {
 
         println("Make sure i get the old ID " + oldID)
 
-        oldInformation.text = oldID.toString()
+//        heroTextName.text = oldID.toString()
+
 
         val heroes = ApiService.oneHero(oldID.toInt())
         println(heroes.isNullOrEmpty())
 
 
             for(h in heroes!!){
+
                 h as Hero
 
+                val urlLink= makeUrlPath(h)
+
+                heroTextName.text = h.name
+                heroTextDescription.text = h.description
+                Picasso.get().load(urlLink.toString()).into(heroInfoImage)
                 println("Does this work?" + h.name)
                 println("Does this work?" + h.description)
 //                println("Does this work?" + h.urls[])
@@ -42,6 +49,15 @@ class HeroMoreInfo : AppCompatActivity() {
                 heroListAllSeries.adapter = secondAdapter
          }
 
+    }
+
+    fun makeUrlPath(hero: Hero): String{
+        val extension = hero.thumbnail.extension.toString()
+        val path = hero.thumbnail.path.toString()
+        val aspectRatio = "portrait_fantastic"
+        val imageBuild = path+"/"+aspectRatio+"."+extension
+        println("Here is imagebuild " +imageBuild)
+        return imageBuild
     }
 
 
