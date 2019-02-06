@@ -1,5 +1,6 @@
 package necrotric.example.marvelhero.Controller
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -18,6 +19,8 @@ class HeroBrowseActivity : AppCompatActivity() {
 
     lateinit var adapter: HeroAdapter
     var characterList = ArrayList<Hero>()
+    var count = 0
+    lateinit var selectedAlphabet: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,33 +66,21 @@ class HeroBrowseActivity : AppCompatActivity() {
                         getString(R.string.selected_item) + " " + personNames[position],
                         Toast.LENGTH_SHORT
                     ).show()
-//                   thread(start = true) {
-
-                    characterList.removeAll(characterList)
-                    characterList = ArrayList()
-                    val heroes = ApiService.heroApiRequest(personNames[position].toString())
-                    if (heroes != null) {
-                        for (h in heroes!!) {
-                            h as Hero
-//                            println("descrption" + h.description)
-                            characterList.add(h)
-                        }
-                        for (anotherHero in characterList) {
-//                            println("Name: " + anotherHero.thumbnail.extension)
-
-//                println("Series: " +anotherHero.series.items.size)
-//                for(comics in anotherHero.series.items){
-//                    println("Series name:                 " + comics.name)
-//                }
-
-                        }
-
-                    }
+                    selectedAlphabet = personNames[position].toString()
+                    count = 0
+                    characterList = heroApiMethod(count)
                     if (characterList.size > 1) {
 
                         adapter = HeroAdapter(this@HeroBrowseActivity, characterList)
 
-                        heroListView.adapter = adapter
+                        browseHeroListView.adapter = adapter
+                        browseHeroListView.setOnItemClickListener { parent, view, position, id ->
+                            val pos = characterList[position].id.toString()
+                        val heroInfo = Intent(this@HeroBrowseActivity,HeroMoreInfo::class.java)
+                        heroInfo.putExtra("SEARCH_VALUE", pos)
+                        startActivity(heroInfo);
+                        println(pos.toString())
+                        }
 
 
                     }
@@ -100,9 +91,65 @@ class HeroBrowseActivity : AppCompatActivity() {
                     // Code to perform some action when nothing is selected
                 }
             }
+
+
+            heroBrowseNextBtn.setOnClickListener {
+                count += 10
+                characterList = heroApiMethod(count)
+                if (characterList.size > 1) {
+
+                    adapter = HeroAdapter(this@HeroBrowseActivity, characterList)
+
+                    browseHeroListView.adapter = adapter
+                    browseHeroListView.setOnItemClickListener { parent, view, position, id ->
+                        val pos = characterList[position].id.toString()
+                        val heroInfo = Intent(this@HeroBrowseActivity,HeroMoreInfo::class.java)
+                        heroInfo.putExtra("SEARCH_VALUE", pos)
+                        startActivity(heroInfo);
+                    }
+
+
+                }else {
+                    count-=10
+                }
+            }
+            heroBrowseBackBtn.setOnClickListener {
+                if(count>=10){
+                    count -= 10
+                }
+                characterList = heroApiMethod(count)
+                if (characterList.size > 1) {
+                    adapter = HeroAdapter(this@HeroBrowseActivity, characterList)
+                    browseHeroListView.adapter = adapter
+                    browseHeroListView.setOnItemClickListener { parent, view, position, id ->
+                        val pos = characterList[position].id.toString()
+                        val heroInfo = Intent(this@HeroBrowseActivity,HeroMoreInfo::class.java)
+                        heroInfo.putExtra("SEARCH_VALUE", pos)
+                        startActivity(heroInfo);
+                    }
+                }else {
+                    count+=10
+                }
+            }
         }
 
 
+    }
+    fun heroApiMethod(count: Int): ArrayList<Hero> {
+        var newCharacterList = ArrayList<Hero>()
+        newCharacterList = ArrayList()
+
+
+        val heroes = ApiService.heroApiRequest(selectedAlphabet.toString(),count)
+        println(heroes.isNullOrEmpty())
+        if (heroes != null) {
+            println("Heroes exist")
+            for (h in heroes!!) {
+                h as Hero
+                newCharacterList.add(h)
+            }
+        }
+        return newCharacterList
     }
 
 

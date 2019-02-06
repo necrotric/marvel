@@ -21,36 +21,37 @@
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline2"/>
     <ListView
             android:layout_width="0dp"
-            android:layout_height="184dp"
+            android:layout_height="117dp"
             android:id="@+id/urlHeroList"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/_dynamic" android:layout_marginTop="16dp"/>
     <ListView
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="182dp"
             app:layout_constraintBottom_toTopOf="@+id/urlHeroList"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            android:id="@+id/heroListAllSeries" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="@+id/guideline4"/>
+            android:id="@+id/heroListAllSeries"
+    />
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp" tools:srcCompat="@tools:sample/avatars"
-            android:id="@+id/heroInfoImage" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/heroInfoImage"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/heroTextName"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3" android:scaleType="centerInside"/>
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline6" app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline4"/>
     <TextView
             android:text="TextView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/heroTextDescription"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline3" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4"/>
+            app:layout_constraintTop_toTopOf="@+id/guideline2" app:layout_constraintStart_toStartOf="@+id/guideline6"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline9"/>
     <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                           android:id="@+id/guideline2"
                                           android:orientation="horizontal"
@@ -60,6 +61,13 @@
                                           android:orientation="horizontal"
                                           app:layout_constraintGuide_percent="0.24"/>
     <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                          android:id="@+id/guideline4" app:layout_constraintGuide_begin="274dp"
+                                          android:id="@+id/guideline4" app:layout_constraintGuide_begin="299dp"
+                                          android:orientation="horizontal"/>
+    <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                          android:id="@+id/guideline6"
+                                          android:orientation="vertical"
+                                          app:layout_constraintGuide_begin="206dp"/>
+    <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                          android:id="@+id/guideline9" app:layout_constraintGuide_begin="410dp"
                                           android:orientation="horizontal"/>
 </android.support.constraint.ConstraintLayout>
