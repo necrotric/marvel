@@ -17,93 +17,76 @@ class SeriesSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_series_search)
-
-
-
         seriesSearchBtn.setOnClickListener {
             count = 0
             seriesNewList = serieSearchFunction(count)
             if (seriesNewList.size > 1) {
-                adapter = SeriesRecycleAdapter(this, seriesNewList){heroitem->
-                            //TODO return id to showSeriesInfo
-                 }
-                    seriesListView.adapter = adapter
-                    val layoutManager = LinearLayoutManager(this)
-                    seriesListView.layoutManager = layoutManager
-                    seriesListView.setHasFixedSize(true)
-
-
-        }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-        loadMore.setOnClickListener {
-            count = count + 10
-            seriesNewList = serieSearchFunction(count)
-            if (seriesNewList.size > 1) {
-                adapter = SeriesRecycleAdapter(this, seriesNewList){heroitem->
+                adapter = SeriesRecycleAdapter(this, seriesNewList) { heroitem ->
                     //TODO return id to showSeriesInfo
                 }
                 seriesListView.adapter = adapter
                 val layoutManager = LinearLayoutManager(this)
                 seriesListView.layoutManager = layoutManager
                 seriesListView.setHasFixedSize(true)
-        }else {
-                count-=10
+            }
+        }
+        loadMore.setOnClickListener {
+            count = count + 5
+            seriesNewList = serieSearchFunction(count)
+            if (seriesNewList.size > 1) {
+                adapter = SeriesRecycleAdapter(this, seriesNewList) { heroitem ->
+                    //TODO return id to showSeriesInfo
+                }
+                seriesListView.adapter = adapter
+                val layoutManager = LinearLayoutManager(this)
+                seriesListView.layoutManager = layoutManager
+                seriesListView.setHasFixedSize(true)
+            } else {
+                count -= 5
             }
         }
 
         loadPrevious.setOnClickListener {
-            count = count - 10
+            if (count >= 5) {
+                count -= 5
+            }
             seriesNewList = serieSearchFunction(count)
             if (seriesNewList.size > 1) {
-                adapter = SeriesRecycleAdapter(this, seriesNewList){heroitem->
+                adapter = SeriesRecycleAdapter(this, seriesNewList) { heroitem ->
                     //TODO return id to showSeriesInfo
                 }
                 seriesListView.adapter = adapter
                 val layoutManager = LinearLayoutManager(this)
                 seriesListView.layoutManager = layoutManager
                 seriesListView.setHasFixedSize(true)
-            }else {
-                count+=10
+            } else {
+                count += 5
             }
 
 
         }
     }
 
-    fun serieSearchFunction(count: Int): ArrayList<Series>{
+    fun serieSearchFunction(count: Int): ArrayList<Series> {
         var returnSeries = ArrayList<Series>()
         returnSeries = ArrayList()
         val seriesResult = ApiService.serieApiRequest(seriesSearchField.text.toString(), count)
 
         if (seriesResult != null) {
-            for (serie in seriesResult){
+            for (serie in seriesResult) {
 
                 serie as Series
                 returnSeries.add(serie)
 
                 println("Title: " + serie.title)
-                println("Description: " +serie.description)
+                println("Description: " + serie.description)
                 println("Rating: " + serie.rating)
                 println(serie.thumbnail.path)
 
-                for(i in serie.characters.items){
+                for (i in serie.characters.items) {
                     println("Heroes " + i.name)
                 }
             }
-
-
         }
         return returnSeries
     }

@@ -67,14 +67,15 @@ object ApiService {
     }
 
     fun serieApiRequest(search : String ="a", offset: Int): Array<*>?{
-        if(search == ""){
-
+        var serieSrch = search
+        if(serieSrch == ""){
+            serieSrch =randomizeAlphabet()
         }
         val time = getNow()
         val hash = Constant().calcHash(time)
         var apiResult: Array<*>? = null
 
-        service.getSeries(time, pubKey, hash,10,offset, search).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
+        service.getSeries(time, pubKey, hash,5,offset, serieSrch).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
         while( apiResult == null){
             Thread.sleep(50)
             println("Im crashing")
