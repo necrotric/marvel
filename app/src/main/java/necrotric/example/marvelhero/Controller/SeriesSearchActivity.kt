@@ -38,9 +38,16 @@ class SeriesSearchActivity : AppCompatActivity() {
             for (serie in seriesResult){
 
                 serie as Series
+
+
                 println("Title: " + serie.title)
                 println("Description: " +serie.description)
                 println("Rating: " + serie.rating)
+                println(serie.thumbnail.path)
+
+                for(i in serie.characters.items){
+                    println("Heroes " + i.name)
+                }
             }
 
 
