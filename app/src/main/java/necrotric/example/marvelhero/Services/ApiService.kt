@@ -74,7 +74,7 @@ object ApiService {
         val hash = Constant().calcHash(time)
         var apiResult: Array<*>? = null
 
-        service.getSeries(time, pubKey, hash,5,offset, search).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
+        service.getSeries(time, pubKey, hash,10,offset, search).subscribeOn(Schedulers.io()).subscribe { wrapper -> apiResult = wrapper.data.results }
         while( apiResult == null){
             Thread.sleep(50)
             println("Im crashing")
