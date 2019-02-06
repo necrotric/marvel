@@ -11,11 +11,11 @@
     <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                           android:id="@+id/guideline7"
                                           android:orientation="horizontal"
-                                          app:layout_constraintGuide_percent="0.36"/>
+                                          app:layout_constraintGuide_percent="0.3625304"/>
     <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                           android:id="@+id/guideline8"
                                           android:orientation="horizontal"
-                                          app:layout_constraintGuide_begin="276dp"/>
+                                          app:layout_constraintGuide_percent="0.67396593"/>
     <ImageView
             android:layout_width="165dp"
             android:layout_height="0dp" tools:srcCompat="@tools:sample/avatars"

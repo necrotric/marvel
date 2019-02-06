@@ -3,8 +3,10 @@ package necrotric.example.marvelhero.Controller
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+//import android.widget.ArrayAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_hero_more_info.*
+import necrotric.example.marvelhero.Adapter.UrlAdapter
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.Models.Items
 import necrotric.example.marvelhero.Models.Urls
@@ -12,7 +14,7 @@ import necrotric.example.marvelhero.R
 import necrotric.example.marvelhero.Services.ApiService
 
 class HeroMoreInfo : AppCompatActivity() {
-    lateinit var adapter: ArrayAdapter<Urls>
+    lateinit var adapter: UrlAdapter
     lateinit var secondAdapter: ArrayAdapter<Items>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,7 @@ class HeroMoreInfo : AppCompatActivity() {
 //                println("Does this work?" + h.urls[])
                 println("Does this work?" + h.description)
 
-                adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,h.urls)
+                adapter = UrlAdapter(this,h)
                 urlHeroList.adapter = adapter
 
                 secondAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, h.series.items)
