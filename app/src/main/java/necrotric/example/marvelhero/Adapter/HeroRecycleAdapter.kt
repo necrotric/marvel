@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
 
-class HeroRecycleAdapter(val context: Context, val heroes: ArrayList<Hero>) : RecyclerView.Adapter<HeroRecycleAdapter.Holder>() {
+class HeroRecycleAdapter(val context: Context, val heroes: ArrayList<Hero>, val itemClick: (Hero)-> Unit ) : RecyclerView.Adapter<HeroRecycleAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
        holder.bindHero(heroes[position],context)
     }
@@ -23,10 +23,10 @@ class HeroRecycleAdapter(val context: Context, val heroes: ArrayList<Hero>) : Re
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.hero_list_item, parent, false)
-        return Holder(view)
+        return Holder(view, itemClick)
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class Holder(itemView: View, val itemClick: (Hero) -> Unit ) : RecyclerView.ViewHolder(itemView){
 
         val heroDescription = itemView.findViewById<TextView>(R.id.heroListDescrption)
          val heroName = itemView.findViewById<TextView>(R.id.heroListName)
@@ -41,6 +41,7 @@ class HeroRecycleAdapter(val context: Context, val heroes: ArrayList<Hero>) : Re
             val aspectRatio = "portrait_xlarge"
             val imageBuild = path+"/"+aspectRatio+"."+extension
             Picasso.get().load(imageBuild).into(heroImage)
+            itemView.setOnClickListener { itemClick(hero) }
         }
     }
 }

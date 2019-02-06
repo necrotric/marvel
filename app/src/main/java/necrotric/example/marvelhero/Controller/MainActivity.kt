@@ -35,7 +35,13 @@ class MainActivity : AppCompatActivity() {
             characterList = heroApiMethod(count)
                 if (characterList.size > 1) {
 
-                    adapter = HeroRecycleAdapter(this, characterList)
+                    adapter = HeroRecycleAdapter(this, characterList){heroitem->
+                       val heroInfo =  Intent(this, HeroMoreInfo::class.java)
+                        heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
+                       startActivity(heroInfo)
+
+
+                    }
                     heroListView.adapter = adapter
                     val layoutManager = LinearLayoutManager(this)
                     heroListView.layoutManager = layoutManager
@@ -55,7 +61,13 @@ class MainActivity : AppCompatActivity() {
             characterList = heroApiMethod(count)
             if (characterList.size > 1) {
 
-                adapter = HeroRecycleAdapter(this, characterList)
+                adapter = HeroRecycleAdapter(this, characterList){heroitem->
+                    val heroInfo =  Intent(this, HeroMoreInfo::class.java)
+                    heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
+                    startActivity(heroInfo)
+
+
+                }
                 heroListView.adapter = adapter
                 val layoutManager = LinearLayoutManager(this)
                 heroListView.layoutManager = layoutManager
@@ -80,7 +92,11 @@ class MainActivity : AppCompatActivity() {
             characterList = heroApiMethod(count)
             if (characterList.size > 1) {
 
-                adapter = HeroRecycleAdapter(this, characterList)
+                adapter = HeroRecycleAdapter(this, characterList){heroitem->
+                    val heroInfo =  Intent(this, HeroMoreInfo::class.java)
+                    heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
+                    startActivity(heroInfo)
+                }
                 heroListView.adapter = adapter
                 val layoutManager = LinearLayoutManager(this)
                 heroListView.layoutManager = layoutManager
