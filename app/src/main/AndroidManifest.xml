@@ -12,15 +12,20 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".Controller.MainMenuActivity"
-                  android:configChanges="orientation|screenSize|keyboardHidden">
+        <activity android:name=".Controller.SeriesMoreInfoActivity">
+        </activity>
+        <activity
+                android:name=".Controller.MainMenuActivity"
+                android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Controller.SeriesSearchActivity"
-                  android:configChanges="orientation|screenSize|keyboardHidden">
+        <activity
+                android:name=".Controller.SeriesSearchActivity"
+                android:configChanges="orientation|screenSize|keyboardHidden">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN"/> -->
@@ -29,24 +34,29 @@
             <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".Controller.HeroMoreInfo"
-                  android:configChanges="orientation|screenSize|keyboardHidden">
+        <activity
+                android:name=".Controller.HeroMoreInfo"
+                android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
-        <activity android:name=".Controller.HeroBrowseActivity"
-                  android:configChanges="orientation|screenSize|keyboardHidden">
+        <activity
+                android:name=".Controller.HeroBrowseActivity"
+                android:configChanges="orientation|screenSize|keyboardHidden">
 
-             <!--<intent-filter>-->
-             <!--<action android:name="android.intent.action.MAIN"/>-->
-             <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-             <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".Controller.MainActivity"
-                  android:configChanges="orientation|screenSize|keyboardHidden">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+        <activity
+                android:name=".Controller.MainActivity"
+                android:configChanges="orientation|screenSize|keyboardHidden">
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <meta-data
