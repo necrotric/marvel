@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
 
-class HeroRecycleAdapter(val context: Context, val heroes: ArrayList<Hero>, val itemClick: (Hero)-> Unit ) : RecyclerView.Adapter<HeroRecycleAdapter.Holder>() {
+class HeroRecycleAdapter(val context: Context, var heroes: ArrayList<Hero>, val itemClick: (Hero)-> Unit ) : RecyclerView.Adapter<HeroRecycleAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
        holder.bindHero(heroes[position],context)
     }

@@ -26,30 +26,30 @@ class HeroMoreInfo : AppCompatActivity() {
 //        heroTextName.text = oldID.toString()
 
 
-        val heroes = ApiService.oneHero(oldID.toInt())
-        println(heroes.isNullOrEmpty())
+//        val heroes = ApiService.oneHero(oldID.toInt())
 
 
-            for(h in heroes!!){
 
-                h as Hero
+//            for(h in heroes!!){
+//
+//                h as Hero
+//
+//                val urlLink= makeUrlPath(h)
+//
+//                heroTextName.text = h.name
+//                heroTextDescription.text = h.description
+//                Picasso.get().load(urlLink.toString()).into(heroInfoImage)
+//                println("Does this work?" + h.name)
+//                println("Does this work?" + h.description)
+////                println("Does this work?" + h.urls[])
+//                println("Does this work?" + h.description)
 
-                val urlLink= makeUrlPath(h)
-
-                heroTextName.text = h.name
-                heroTextDescription.text = h.description
-                Picasso.get().load(urlLink.toString()).into(heroInfoImage)
-                println("Does this work?" + h.name)
-                println("Does this work?" + h.description)
-//                println("Does this work?" + h.urls[])
-                println("Does this work?" + h.description)
-
-                adapter = UrlAdapter(this,h)
-                urlHeroList.adapter = adapter
-
-                secondAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, h.series.items)
-                heroListAllSeries.adapter = secondAdapter
-         }
+//                adapter = UrlAdapter(this,h)
+//                urlHeroList.adapter = adapter
+//
+//                secondAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, h.series.items)
+//                heroListAllSeries.adapter = secondAdapter
+//         }
 
     }
 

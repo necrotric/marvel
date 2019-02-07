@@ -5,6 +5,9 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 import necrotric.example.marvelhero.Adapter.HeroAdapter
@@ -29,112 +32,128 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        var heroSearch = mainSearchField.text.toString()
+//        var heroSearch = mainSearchField.text.toString()
         mainSearchBtn.setOnClickListener {
             count = 0
-            characterList = heroApiMethod(count)
-                if (characterList.size > 1) {
-
-                    adapter = HeroRecycleAdapter(this, characterList){heroitem->
-                       val heroInfo =  Intent(this, HeroMoreInfo::class.java)
-                        heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
-                       startActivity(heroInfo)
+            adapter = HeroRecycleAdapter(this, characterList) { heroitem ->
+                val heroInfo = Intent(this, HeroMoreInfo::class.java)
+                heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
+                println(heroitem.id.toString())
+                startActivity(heroInfo)
 
 
-                    }
-                    heroListView.adapter = adapter
-                    val layoutManager = LinearLayoutManager(this)
-                    heroListView.layoutManager = layoutManager
-                    heroListView.setHasFixedSize(true)
-
-//                    heroListView.setOnItemClickListener { parent, view, position, id ->
-//                        val pos = characterList[position].id.toString()
-//                        val heroInfo = Intent(this, HeroMoreInfo::class.java)
-//                        heroInfo.putExtra("SEARCH_VALUE", pos)
-//                        startActivity(heroInfo);
-//                        println(pos.toString())
-//                    }
             }
+            heroListView.adapter = adapter
+            val layoutManager = LinearLayoutManager(this)
+            heroListView.layoutManager = layoutManager
+            heroListView.setHasFixedSize(true)
+//            characterList = heroApiMethod(count)
+            ApiService.service.getCharacters(mainSearchField.text.toString(), count, 10)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { wrapper ->
+                    characterList = ArrayList()
+                    for (i in wrapper.data.results) {
+                        characterList.add(i)
+                    }
+                    adapter.heroes = characterList
+                    adapter.notifyDataSetChanged()
+                }
+
         }
-        mainNextBtn.setOnClickListener{
+        mainNextBtn.setOnClickListener {
             count += 10
-            characterList = heroApiMethod(count)
-            if (characterList.size > 1) {
+            if(!characterList.isEmpty()){
+            adapter = HeroRecycleAdapter(this, characterList) { heroitem ->
+                val heroInfo = Intent(this, HeroMoreInfo::class.java)
+                heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
+                println(heroitem.id.toString())
+                startActivity(heroInfo)
+            }
 
-                adapter = HeroRecycleAdapter(this, characterList){heroitem->
-                    val heroInfo =  Intent(this, HeroMoreInfo::class.java)
-                    heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
-                    startActivity(heroInfo)
-
+            }
+            heroListView.adapter = adapter
+            val layoutManager = LinearLayoutManager(this)
+            heroListView.layoutManager = layoutManager
+            heroListView.setHasFixedSize(true)
+//            characterList = heroApiMethod(count)
+            ApiService.service.getCharacters(mainSearchField.text.toString(), count, 10)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { wrapper ->
+                    characterList = ArrayList()
+                    for (i in wrapper.data.results) {
+                        characterList.add(i)
+                    }
+                    if(!characterList.isEmpty()){
+                    adapter.heroes = characterList
+                    adapter.notifyDataSetChanged()}
+                    if (characterList.isEmpty()) {
+                        count -= 10
+                    }
 
                 }
-                heroListView.adapter = adapter
-                val layoutManager = LinearLayoutManager(this)
-                heroListView.layoutManager = layoutManager
-                heroListView.setHasFixedSize(true)
-
-//                heroListView.setOnItemClickListener { parent, view, position, id ->
-//                    val pos = characterList[position].id.toString()
-//                    val heroInfo = Intent(this, HeroMoreInfo::class.java)
-//                    heroInfo.putExtra("SEARCH_VALUE", pos)
-//                    startActivity(heroInfo);
-//                    println(pos.toString())
-//                }
-            } else {
-            count-=10
         }
-        }
-        mainBackBtn.setOnClickListener{
-            if(count>=10){
+        mainBackBtn.setOnClickListener {
+            if (count >= 10) {
                 count -= 10
             }
+            adapter = HeroRecycleAdapter(this, characterList) { heroitem ->
+                val heroInfo = Intent(this, HeroMoreInfo::class.java)
+                heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
+                println(heroitem.id.toString())
+                startActivity(heroInfo)
 
-            characterList = heroApiMethod(count)
-            if (characterList.size > 1) {
 
-                adapter = HeroRecycleAdapter(this, characterList){heroitem->
-                    val heroInfo =  Intent(this, HeroMoreInfo::class.java)
-                    heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
-                    startActivity(heroInfo)
+            }
+            heroListView.adapter = adapter
+            val layoutManager = LinearLayoutManager(this)
+            heroListView.layoutManager = layoutManager
+            heroListView.setHasFixedSize(true)
+//            characterList = heroApiMethod(count)
+            ApiService.service.getCharacters(mainSearchField.text.toString(), count, 10)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { wrapper ->
+                    characterList = ArrayList()
+                    for (i in wrapper.data.results) {
+                        i as Hero
+                        characterList.add(i)
+                    }
+                    if(characterList.isEmpty()){
+                        count +=10
+                        println("im empty as fuck")
+                    }
+                    if(!characterList.isEmpty()){
+                    adapter.heroes = characterList
+                    adapter.notifyDataSetChanged()}
+
+
                 }
-                heroListView.adapter = adapter
-                val layoutManager = LinearLayoutManager(this)
-                heroListView.layoutManager = layoutManager
-                heroListView.setHasFixedSize(true)
 
-//                heroListView.setOnItemClickListener { parent, view, position, id ->
-//                    val pos = characterList[position].id.toString()
-//                    val heroInfo = Intent(this, HeroMoreInfo::class.java)
-//                    heroInfo.putExtra("SEARCH_VALUE", pos)
-//                    startActivity(heroInfo);
-//                    println(pos.toString())
-//                }
-            } else {
-                count+=10
-            }
+            //characterList = heroApiMethod(count)
+
+
+
         }
 
     }
 
-    fun heroApiMethod(count: Int): ArrayList<Hero> {
-//        var firstLetter = mainSearchField.text.toString()
-        var newCharacterList = ArrayList<Hero>()
-        newCharacterList = ArrayList()
-//        if(mainSearchField.text.toString() == "" && !characterList.isEmpty()){
-//            println("First character ? "+characterList[0].name.first())
-//            firstLetter = characterList[0].name.first().toString()
+//    fun heroApiMethod(count: Int): ArrayList<Hero> {
+//
+//        var newCharacterList = ArrayList<Hero>()
+//        newCharacterList = ArrayList()
+//        val heroes = ApiService.heroApiRequest(mainSearchField.text.toString(),count)
+//        println(heroes.isNullOrEmpty())
+//        if (heroes != null) {
+//            println("Heroes exist")
+//            for (h in heroes!!) {
+//                h as Hero
+//                newCharacterList.add(h)
+//            }
 //        }
-        val heroes = ApiService.heroApiRequest(mainSearchField.text.toString(),count)
-        println(heroes.isNullOrEmpty())
-        if (heroes != null) {
-            println("Heroes exist")
-            for (h in heroes!!) {
-                h as Hero
-                newCharacterList.add(h)
-            }
-        }
-        return newCharacterList
-    }
+//        return newCharacterList
+//    }
 
 }
 

@@ -70,24 +70,24 @@ class SeriesSearchActivity : AppCompatActivity() {
     fun serieSearchFunction(count: Int): ArrayList<Series> {
         var returnSeries = ArrayList<Series>()
         returnSeries = ArrayList()
-        val seriesResult = ApiService.serieApiRequest(seriesSearchField.text.toString(), count)
+//        val seriesResult = ApiService.serieApiRequest(seriesSearchField.text.toString(), count)
 
-        if (seriesResult != null) {
-            for (serie in seriesResult) {
-
-                serie as Series
-                returnSeries.add(serie)
-
-                println("Title: " + serie.title)
-                println("Description: " + serie.description)
-                println("Rating: " + serie.rating)
-                println(serie.thumbnail.path)
-
-                for (i in serie.characters.items) {
-                    println("Heroes " + i.name)
-                }
-            }
-        }
+//        if (seriesResult != null) {
+//            for (serie in seriesResult) {
+//
+//                serie as Series
+//                returnSeries.add(serie)
+//
+//                println("Title: " + serie.title)
+//                println("Description: " + serie.description)
+//                println("Rating: " + serie.rating)
+//                println(serie.thumbnail.path)
+//
+//                for (i in serie.characters.items) {
+//                    println("Heroes " + i.name)
+//                }
+//            }
+//        }
         return returnSeries
     }
 }

@@ -142,15 +142,15 @@ class HeroBrowseActivity : AppCompatActivity() {
         newCharacterList = ArrayList()
 
 
-        val heroes = ApiService.heroApiRequest(selectedAlphabet.toString(),count)
-        println(heroes.isNullOrEmpty())
-        if (heroes != null) {
-            println("Heroes exist")
-            for (h in heroes!!) {
-                h as Hero
-                newCharacterList.add(h)
-            }
-        }
+//        val heroes = ApiService.heroApiRequest(selectedAlphabet.toString(),count)
+//        println(heroes.isNullOrEmpty())
+//        if (heroes != null) {
+//            println("Heroes exist")
+//            for (h in heroes!!) {
+//                h as Hero
+//                newCharacterList.add(h)
+//            }
+//        }
         return newCharacterList
     }
 
