@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory
         logging.level = HttpLoggingInterceptor.Level.BODY
         val builder = OkHttpClient.Builder()
         builder.addInterceptor(logging)
-        builder.addInterceptor({
+        builder.addInterceptor{
             val request = it.request()
             val originalUrl = request.url()
             val newUrl = originalUrl
@@ -38,7 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory
                 .build()
             val newRequest = request.newBuilder().url(newUrl).build()
             it.proceed(newRequest)
-        })
+        }
         val okHttpClient = builder.build()
         return okHttpClient
     }

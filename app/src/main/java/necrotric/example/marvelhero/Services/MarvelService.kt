@@ -22,5 +22,5 @@ interface MarvelService {
     @GET("/v1/public/series")
     fun getSeries(@Query("limit") limit: Int,
                   @Query("offset") offset: Int,
-                  @Query("titleStartsWith") titleStartsWith: String): Single<Api<Array<Series>>>
+                  @Query("titleStartsWith") titleStartsWith: String?): Single<Api<Array<Series>>>
 }

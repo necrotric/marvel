@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 import necrotric.example.marvelhero.Models.Series
 import necrotric.example.marvelhero.R
 
-class SeriesRecycleAdapter(val context: Context, val series: ArrayList<Series>, val itemClick: (Series)-> Unit ) : RecyclerView.Adapter<SeriesRecycleAdapter.Holder>() {
+class SeriesRecycleAdapter(val context: Context, var series: ArrayList<Series>, val itemClick: (Series)-> Unit ) : RecyclerView.Adapter<SeriesRecycleAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
        holder.bindSerie(series[position],context)
     }

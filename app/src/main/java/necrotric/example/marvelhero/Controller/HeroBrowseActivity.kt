@@ -1,5 +1,6 @@
 package necrotric.example.marvelhero.Controller
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +10,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_hero_browse.*
+import kotlinx.android.synthetic.main.activity_main.*
 import necrotric.example.marvelhero.Adapter.HeroRecycleAdapter
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
@@ -21,11 +25,19 @@ class HeroBrowseActivity : AppCompatActivity() {
     lateinit var adapter: HeroRecycleAdapter
     var characterList = ArrayList<Hero>()
     var count = 0
+    var searchVal: String? = null
     lateinit var selectedAlphabet: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hero_browse)
+
+        adapter = HeroRecycleAdapter(this, characterList) { heroitem ->
+            val heroInfo = Intent(this, HeroMoreInfo::class.java)
+            heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
+            println(heroitem.id.toString())
+            startActivity(heroInfo)
+        }
 
         val alphaChar = arrayOf(
             "A",
@@ -61,6 +73,7 @@ class HeroBrowseActivity : AppCompatActivity() {
             spinner.adapter = arrayAdapter
 
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                @SuppressLint("CheckResult")
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     Toast.makeText(
                         this@HeroBrowseActivity,
@@ -69,21 +82,22 @@ class HeroBrowseActivity : AppCompatActivity() {
                     ).show()
                     selectedAlphabet = alphaChar[position].toString()
                     count = 0
-                    characterList = heroApiMethod(count)
-                    if (characterList.size > 1) {
-                        adapter = HeroRecycleAdapter(this@HeroBrowseActivity, characterList){heroitem->
-                            val heroInfo =  Intent(this@HeroBrowseActivity, HeroMoreInfo::class.java)
-                            heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
-                            startActivity(heroInfo)
+                    searchVal = getValIfNull(selectedAlphabet)
+                    ApiService.service.getCharacters(searchVal, count, 10)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe { wrapper ->
+                            characterList = ArrayList()
+                            for (i in wrapper.data.results) {
+                                characterList.add(i)
+                            }
+                            adapter.heroes = characterList
+                            adapter.notifyDataSetChanged()
+                            browseHeroListView.adapter = adapter
+                            val layoutManager = LinearLayoutManager(this@HeroBrowseActivity)
+                            browseHeroListView.layoutManager = layoutManager
+                            browseHeroListView.setHasFixedSize(true)
                         }
-                        browseHeroListView.adapter = adapter
-                        val layoutManager = LinearLayoutManager(this@HeroBrowseActivity)
-                        browseHeroListView.layoutManager = layoutManager
-                        browseHeroListView.setHasFixedSize(true)
-
-
-
-                    }
 
                 }
 
@@ -94,49 +108,73 @@ class HeroBrowseActivity : AppCompatActivity() {
 
 
             heroBrowseNextBtn.setOnClickListener {
+                searchVal = getValIfNull(selectedAlphabet)
                 count += 10
-                characterList = heroApiMethod(count)
-                if (characterList.size > 1) {
+                ApiService.service.getCharacters(searchVal, count, 10)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { wrapper ->
+                        characterList = ArrayList()
+                        for (i in wrapper.data.results) {
+                            characterList.add(i)
+                        }
+                        if (!characterList.isEmpty()) {
+                            adapter.heroes = characterList
+                            adapter.notifyDataSetChanged()
+                            browseHeroListView.adapter = adapter
+                            val layoutManager = LinearLayoutManager(this@HeroBrowseActivity)
+                            browseHeroListView.layoutManager = layoutManager
+                            browseHeroListView.setHasFixedSize(true)
+                        }
+                        if (characterList.isEmpty()) {
+                            count -= 10
+                        }
 
-                    adapter = HeroRecycleAdapter(this@HeroBrowseActivity, characterList){heroitem->
-                        val heroInfo =  Intent(this, HeroMoreInfo::class.java)
-                        heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
-                        startActivity(heroInfo)
                     }
-                    browseHeroListView.adapter = adapter
-                    val layoutManager = LinearLayoutManager(this)
-                    browseHeroListView.layoutManager = layoutManager
-                    browseHeroListView.setHasFixedSize(true)
-
-
-                }else {
-                    count-=10
-                }
             }
             heroBrowseBackBtn.setOnClickListener {
+                searchVal = getValIfNull(selectedAlphabet)
                 if(count>=10){
                     count -= 10
                 }
-                characterList = heroApiMethod(count)
-                if (characterList.size > 1) {
-                    adapter = HeroRecycleAdapter(this@HeroBrowseActivity, characterList){heroitem->
-                        val heroInfo =  Intent(this, HeroMoreInfo::class.java)
-                        heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
-                        startActivity(heroInfo)
-                    }
-                    browseHeroListView.adapter = adapter
-                    val layoutManager = LinearLayoutManager(this)
-                    browseHeroListView.layoutManager = layoutManager
-                    browseHeroListView.setHasFixedSize(true)
+                ApiService.service.getCharacters(searchVal, count, 10)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { wrapper ->
+                        characterList = ArrayList()
+                        for (i in wrapper.data.results) {
+                            characterList.add(i)
+                        }
+                        if (characterList.isEmpty()) {
+                            count += 10
+                            println("im empty as fuck")
+                        }
+                        if (!characterList.isEmpty()) {
+                            adapter.heroes = characterList
+                            adapter.notifyDataSetChanged()
+                            browseHeroListView.adapter = adapter
+                            val layoutManager = LinearLayoutManager(this@HeroBrowseActivity)
+                            browseHeroListView.layoutManager = layoutManager
+                            browseHeroListView.setHasFixedSize(true)
+                        }
 
-                }else {
-                    count+=10
-                }
+
+                    }
             }
         }
 
 
     }
+
+    fun getValIfNull(selectedChar: String): String? {
+        var value: String? = selectedChar
+        if (value.toString() == "") {
+            value = null
+        }
+        return value
+    }
+
+
     fun heroApiMethod(count: Int): ArrayList<Hero> {
         var newCharacterList = ArrayList<Hero>()
         newCharacterList = ArrayList()
