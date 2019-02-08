@@ -43,10 +43,6 @@ class HeroMoreInfo : AppCompatActivity() {
                 heroTextName.text = h.name
                 heroTextDescription.text = h.description
                 Picasso.get().load(urlLink.toString()).into(heroInfoImage)
-//                println("Does this work?" + h.name)
-//                println("Does this work?" + h.description)
-//                println("Does this work?" + h.urls[])
-//                println("Does this work?" + h.description)
 
                 adapter = UrlAdapter(this,h)
                 urlHeroList.adapter = adapter

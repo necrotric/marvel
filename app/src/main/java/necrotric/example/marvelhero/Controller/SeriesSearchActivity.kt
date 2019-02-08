@@ -1,5 +1,6 @@
 package necrotric.example.marvelhero.Controller
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -21,8 +22,11 @@ class SeriesSearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_series_search)
 
-        adapter = SeriesRecycleAdapter(this, seriesNewList) { heroitem ->
-            //TODO return id to showSeriesInfo
+        adapter = SeriesRecycleAdapter(this, seriesNewList) { serieItem ->
+            val serieInfo = Intent(this, SeriesMoreInfoActivity::class.java)
+            serieInfo.putExtra("SERIE_ID", serieItem.id.toString())
+            println(serieItem.id.toString())
+            startActivity(serieInfo)
         }
 
 
