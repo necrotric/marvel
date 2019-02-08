@@ -12,7 +12,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".Controller.SeriesMoreInfoActivity">
+        <activity android:name=".Controller.SeriesBrowseActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity android:name=".Controller.SeriesMoreInfoActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
         <activity
                 android:name=".Controller.MainMenuActivity"

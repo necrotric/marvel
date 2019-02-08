@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        loadingSpinner.setVisibility(View.INVISIBLE)
         adapter = HeroRecycleAdapter(this, characterList) { heroitem ->
             val heroInfo = Intent(this, HeroMoreInfo::class.java)
             heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainSearchBtn.setOnClickListener {
+            loadingSpinner.setVisibility(View.VISIBLE)
             count = 0
             searchVal = getValIfNull()
             ApiService.service.getCharacters(searchVal, count, 10)
@@ -55,10 +58,12 @@ class MainActivity : AppCompatActivity() {
                     val layoutManager = LinearLayoutManager(this)
                     heroListView.layoutManager = layoutManager
                     heroListView.setHasFixedSize(true)
+                    loadingSpinner.setVisibility(View.INVISIBLE)
                 }
 
         }
         mainNextBtn.setOnClickListener {
+            loadingSpinner.setVisibility(View.VISIBLE)
             count += 10
             searchVal = getValIfNull()
 //            characterList = heroApiMethod(count)
@@ -81,10 +86,12 @@ class MainActivity : AppCompatActivity() {
                     if (characterList.isEmpty()) {
                         count -= 10
                     }
+                    loadingSpinner.setVisibility(View.INVISIBLE)
 
                 }
         }
         mainBackBtn.setOnClickListener {
+            loadingSpinner.setVisibility(View.VISIBLE)
             if (count >= 10) {
                 count -= 10
             }
@@ -94,6 +101,7 @@ class MainActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { wrapper ->
+
                     characterList = ArrayList()
                     for (i in wrapper.data.results) {
                         i as Hero
@@ -111,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                         heroListView.layoutManager = layoutManager
                         heroListView.setHasFixedSize(true)
                     }
-
+                    loadingSpinner.setVisibility(View.INVISIBLE)
 
                 }
         }

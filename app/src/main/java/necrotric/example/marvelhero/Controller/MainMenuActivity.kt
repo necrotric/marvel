@@ -28,7 +28,8 @@ class MainMenuActivity : AppCompatActivity() {
             startActivity(serieSearchActivity)
         }
         menuSerieBrwseBtn.setOnClickListener {
-            //TODO to series browse activity
+            val serieBrowseActivity = Intent(this, SeriesBrowseActivity::class.java)
+            startActivity(serieBrowseActivity)
         }
     }
 }

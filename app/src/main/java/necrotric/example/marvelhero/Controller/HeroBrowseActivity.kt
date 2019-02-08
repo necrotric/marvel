@@ -31,6 +31,7 @@ class HeroBrowseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hero_browse)
+        heroBrowseSpinner.setVisibility(View.INVISIBLE)
 
         adapter = HeroRecycleAdapter(this, characterList) { heroitem ->
             val heroInfo = Intent(this, HeroMoreInfo::class.java)
@@ -75,6 +76,7 @@ class HeroBrowseActivity : AppCompatActivity() {
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 @SuppressLint("CheckResult")
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                    heroBrowseSpinner.setVisibility(View.VISIBLE)
                     Toast.makeText(
                         this@HeroBrowseActivity,
                         getString(R.string.selected_item) + " " + alphaChar[position],
@@ -97,6 +99,7 @@ class HeroBrowseActivity : AppCompatActivity() {
                             val layoutManager = LinearLayoutManager(this@HeroBrowseActivity)
                             browseHeroListView.layoutManager = layoutManager
                             browseHeroListView.setHasFixedSize(true)
+                            heroBrowseSpinner.setVisibility(View.INVISIBLE)
                         }
 
                 }
@@ -108,6 +111,7 @@ class HeroBrowseActivity : AppCompatActivity() {
 
 
             heroBrowseNextBtn.setOnClickListener {
+                heroBrowseSpinner.setVisibility(View.VISIBLE)
                 searchVal = getValIfNull(selectedAlphabet)
                 count += 10
                 ApiService.service.getCharacters(searchVal, count, 10)
@@ -129,10 +133,11 @@ class HeroBrowseActivity : AppCompatActivity() {
                         if (characterList.isEmpty()) {
                             count -= 10
                         }
-
+                        heroBrowseSpinner.setVisibility(View.INVISIBLE)
                     }
             }
             heroBrowseBackBtn.setOnClickListener {
+                heroBrowseSpinner.setVisibility(View.VISIBLE)
                 searchVal = getValIfNull(selectedAlphabet)
                 if(count>=10){
                     count -= 10
@@ -158,7 +163,7 @@ class HeroBrowseActivity : AppCompatActivity() {
                             browseHeroListView.setHasFixedSize(true)
                         }
 
-
+                        heroBrowseSpinner.setVisibility(View.INVISIBLE)
                     }
             }
         }
