@@ -1,3 +1,9 @@
 crash at horizontal change/save value on change
 threads
 sometime random crash???
+
+    Process: necrotric.example.marvelhero, PID: 23752
+    io.reactivex.exceptions.OnErrorNotImplementedException: The exception
+ was not handled due to missing onError handler in the subscribe() method call.
+ Further reading: https://github.com/ReactiveX/RxJava/wiki/Error-Handling
+ | retrofit2.adapter.rxjava2.HttpException: HTTP 409 Conflict

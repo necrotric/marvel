@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/spinner" android:id="@+id/browseHeroListView"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/heroBrowseNextBtn"/>
+            app:layout_constraintBottom_toTopOf="@+id/heroBrowseNextBtn" android:layout_marginBottom="8dp"/>
     <Button
             android:text="PREVIOUS"
             android:layout_width="wrap_content"
@@ -42,5 +42,15 @@
             android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/browseHeroListView"/>
+
+    <pl.droidsonroids.gif.GifImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/loading"
+            android:layout_marginStart="8dp" app:layout_constraintStart_toEndOf="@+id/heroBrowseBackBtn"
+            app:layout_constraintEnd_toStartOf="@+id/heroBrowseNextBtn" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/browseHeroListView"
+            android:layout_marginBottom="6dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/heroBrowseSpinner"/>
 
 </android.support.constraint.ConstraintLayout>

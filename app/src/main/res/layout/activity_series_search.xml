@@ -21,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Name"
             android:ems="10"
             android:id="@+id/seriesSearchField"
             android:layout_marginTop="4dp"
@@ -62,4 +61,13 @@
             android:layout_marginStart="8dp" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/seriesListView"
             app:layout_constraintVertical_bias="1.0"/>
+
+    <pl.droidsonroids.gif.GifImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/loading"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/seriesListView" app:layout_constraintEnd_toStartOf="@+id/loadMore"
+            android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/loadPrevious" android:id="@+id/seriesSrchSpinner"/>
 </android.support.constraint.ConstraintLayout>

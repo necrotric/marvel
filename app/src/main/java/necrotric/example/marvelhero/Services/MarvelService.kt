@@ -10,26 +10,20 @@ import retrofit2.http.Query
 interface MarvelService {
 
     @GET("/v1/public/characters")
-    fun getCharacters(@Query("ts") ts: String,
-                      @Query("apikey") apikey: String,
-                      @Query("hash") hash: String,
-                      @Query("nameStartsWith") nameStartsWith: String,
+    fun getCharacters(@Query("nameStartsWith") nameStartsWith: String?,
                       @Query("offset") offset: Int,
                       @Query("limit") limit: Int): Single<Api<Array<Hero>>>
 
 
     @GET("/v1/public/characters/{id}")
-    fun getCharactersById(@Path("id") id: Int,
-                          @Query("ts") ts: String,
-                          @Query("apikey") apikey: String,
-                          @Query("hash") hash: String): Single<Api<Array<Hero>>>
+    fun getCharactersById(@Path("id") id: Int): Single<Api<Array<Hero>>>
 
 
     @GET("/v1/public/series")
-    fun getSeries(@Query("ts") ts: String,
-                  @Query("apikey") apikey: String,
-                  @Query("hash") hash: String,
-                  @Query("limit") limit: Int,
+    fun getSeries(@Query("limit") limit: Int,
                   @Query("offset") offset: Int,
-                  @Query("titleStartsWith") titleStartsWith: String): Single<Api<Array<Series>>>
+                  @Query("titleStartsWith") titleStartsWith: String?): Single<Api<Array<Series>>>
+
+    @GET ("/v1/public/series/{seriesId}")
+    fun getSerieById(@Path("seriesId")id: Int): Single<Api<Array<Series>>>
 }
