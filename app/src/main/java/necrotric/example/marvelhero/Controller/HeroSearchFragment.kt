@@ -9,21 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.old_activity_main.*
+import kotlinx.android.synthetic.main.old_activity_main.view.*
 import necrotric.example.marvelhero.Adapter.HeroRecycleAdapter
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
 import necrotric.example.marvelhero.Services.ApiService
 
-class MainFragment: Fragment() {
+class HeroSearchFragment: Fragment() {
     lateinit var adapter: HeroRecycleAdapter
     var characterList = ArrayList<Hero>()
     var searchVal: String? = null
     var count = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.activity_main, container, false)
+        val view = inflater.inflate(R.layout.old_activity_main, container, false)
         view.loadingSpinner.setVisibility(View.INVISIBLE)
 
         adapter = HeroRecycleAdapter(characterList) { heroitem ->

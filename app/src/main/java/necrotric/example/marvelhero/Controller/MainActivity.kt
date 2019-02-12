@@ -8,14 +8,10 @@ import android.support.v7.widget.LinearLayoutManager
 
 import android.view.View
 
-import android.text.TextUtils
-
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.old_activity_main.*
 
-import necrotric.example.marvelhero.Adapter.HeroAdapter
 import necrotric.example.marvelhero.Adapter.HeroRecycleAdapter
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
@@ -35,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 //    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.old_activity_main)
 
         loadingSpinner.setVisibility(View.INVISIBLE)
         adapter = HeroRecycleAdapter( characterList) { heroitem ->

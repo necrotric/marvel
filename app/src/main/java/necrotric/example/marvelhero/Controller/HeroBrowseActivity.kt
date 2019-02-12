@@ -13,7 +13,7 @@ import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_hero_browse.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.old_activity_main.*
 import necrotric.example.marvelhero.Adapter.HeroRecycleAdapter
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
