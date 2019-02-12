@@ -1,41 +1,46 @@
 package necrotric.example.marvelhero.Controller
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_series_search.*
+import kotlinx.android.synthetic.main.activity_series_search.view.*
+
 import necrotric.example.marvelhero.Adapter.SeriesRecycleAdapter
 import necrotric.example.marvelhero.Models.Series
 import necrotric.example.marvelhero.R
 import necrotric.example.marvelhero.Services.ApiService
 
-class SeriesSearchActivity : AppCompatActivity() {
+class SeriesSearchFragment: Fragment() {
     lateinit var adapter: SeriesRecycleAdapter
     var seriesNewList = ArrayList<Series>()
     var searchVal: String? = null
     var count = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_series_search)
-        seriesSrchSpinner.setVisibility(View.INVISIBLE)
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.activity_series_search, container, false)
+        view.seriesSrchSpinner.setVisibility(View.INVISIBLE)
 
         adapter = SeriesRecycleAdapter(seriesNewList) { serieItem ->
-            val serieInfo = Intent(this, SeriesMoreInfoActivity::class.java)
+            val serieInfo = Intent(activity, SeriesMoreInfoActivity::class.java)
             serieInfo.putExtra("SERIE_ID", serieItem.id.toString())
             println(serieItem.id.toString())
             startActivity(serieInfo)
         }
 
 
-        seriesSearchBtn.setOnClickListener {
-            seriesSrchSpinner.setVisibility(View.VISIBLE)
+        view.seriesSearchBtn.setOnClickListener {
+            view.seriesSrchSpinner.setVisibility(View.VISIBLE)
             count = 0
-            searchVal = getValIfNull()
+            searchVal = StringConverter.getValIfNull(view.seriesSearchField.text.toString())
             ApiService.service.getSeries(10, count, searchVal)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -47,17 +52,17 @@ class SeriesSearchActivity : AppCompatActivity() {
                     adapter.series = seriesNewList
                     adapter.notifyDataSetChanged()
                     seriesListView.adapter = adapter
-                    val layoutManager = LinearLayoutManager(this)
+                    val layoutManager = LinearLayoutManager(activity)
                     seriesListView.layoutManager = layoutManager
                     seriesListView.setHasFixedSize(true)
-                    seriesSrchSpinner.setVisibility(View.INVISIBLE)
+                    view.seriesSrchSpinner.setVisibility(View.INVISIBLE)
                 }
 
         }
-        loadMore.setOnClickListener {
-            seriesSrchSpinner.setVisibility(View.VISIBLE)
+        view.loadMore.setOnClickListener {
+            view.seriesSrchSpinner.setVisibility(View.VISIBLE)
             count += 10
-            searchVal = getValIfNull()
+            searchVal = StringConverter.getValIfNull(view.seriesSearchField.text.toString())
             ApiService.service.getSeries(10, count, searchVal)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -70,23 +75,23 @@ class SeriesSearchActivity : AppCompatActivity() {
                         adapter.series = seriesNewList
                         adapter.notifyDataSetChanged()
                         seriesListView.adapter = adapter
-                        val layoutManager = LinearLayoutManager(this)
+                        val layoutManager = LinearLayoutManager(activity)
                         seriesListView.layoutManager = layoutManager
                         seriesListView.setHasFixedSize(true)
                     }
                     if (seriesNewList.isEmpty()) {
                         count -= 10
                     }
-                    seriesSrchSpinner.setVisibility(View.INVISIBLE)
+                    view.seriesSrchSpinner.setVisibility(View.INVISIBLE)
                 }
         }
 
-        loadPrevious.setOnClickListener {
-            seriesSrchSpinner.setVisibility(View.VISIBLE)
+        view.loadPrevious.setOnClickListener {
+            view.seriesSrchSpinner.setVisibility(View.VISIBLE)
             if (count >= 10) {
                 count -= 10
             }
-            searchVal = getValIfNull()
+            searchVal = StringConverter.getValIfNull(view.seriesSearchField.text.toString())
             ApiService.service.getSeries(10, count, searchVal)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -99,26 +104,19 @@ class SeriesSearchActivity : AppCompatActivity() {
                         adapter.series = seriesNewList
                         adapter.notifyDataSetChanged()
                         seriesListView.adapter = adapter
-                        val layoutManager = LinearLayoutManager(this)
+                        val layoutManager = LinearLayoutManager(activity)
                         seriesListView.layoutManager = layoutManager
                         seriesListView.setHasFixedSize(true)
                     }
                     if (seriesNewList.isEmpty()) {
                         count += 10
                     }
-                    seriesSrchSpinner.setVisibility(View.INVISIBLE)
+                    view.seriesSrchSpinner.setVisibility(View.INVISIBLE)
                 }
 
 
         }
-    }
 
-    
-    fun getValIfNull(): String? {
-        var value: String? = seriesSearchField.text.toString()
-        if (value.toString() == "") {
-            value = null
-        }
-        return value
-    }
+        return view
+}
 }

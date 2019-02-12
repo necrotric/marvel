@@ -24,6 +24,7 @@ class MainFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.activity_main, container, false)
+        view.loadingSpinner.setVisibility(View.INVISIBLE)
 
         adapter = HeroRecycleAdapter(characterList) { heroitem ->
             val heroInfo = Intent(activity, HeroMoreInfo::class.java)
@@ -33,7 +34,7 @@ class MainFragment: Fragment() {
 
         }
 
-        mainSearchBtn.setOnClickListener {
+        view.mainSearchBtn.setOnClickListener {
             count = 0
             searchVal = StringConverter.getValIfNull(view.mainSearchField.text.toString())
             ApiService.service.getCharacters(searchVal, count, 10)
@@ -54,7 +55,7 @@ class MainFragment: Fragment() {
 
         }
 
-        mainNextBtn.setOnClickListener {
+        view.mainNextBtn.setOnClickListener {
             count += 10
             searchVal = StringConverter.getValIfNull(view.mainSearchField.text.toString())
 //            characterList = heroApiMethod(count)
@@ -80,7 +81,7 @@ class MainFragment: Fragment() {
 
                 }
         }
-        mainBackBtn.setOnClickListener {
+        view.mainBackBtn.setOnClickListener {
             if (count >= 10) {
                 count -= 10
             }

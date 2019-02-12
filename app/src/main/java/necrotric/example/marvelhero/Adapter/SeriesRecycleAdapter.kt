@@ -13,9 +13,9 @@ import com.squareup.picasso.Picasso
 import necrotric.example.marvelhero.Models.Series
 import necrotric.example.marvelhero.R
 
-class SeriesRecycleAdapter(val context: Context, var series: ArrayList<Series>, val itemClick: (Series)-> Unit ) : RecyclerView.Adapter<SeriesRecycleAdapter.Holder>() {
+class SeriesRecycleAdapter(var series: ArrayList<Series>, val itemClick: (Series)-> Unit ) : RecyclerView.Adapter<SeriesRecycleAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
-       holder.bindSerie(series[position],context)
+       holder.bindSerie(series[position])
     }
 
     override fun getItemCount(): Int {
@@ -34,7 +34,7 @@ class SeriesRecycleAdapter(val context: Context, var series: ArrayList<Series>, 
          val serieName = itemView.findViewById<TextView>(R.id.serieListName)
         val serieImage = itemView.findViewById<ImageView>(R.id.serieListImage)
 
-        fun bindSerie(serie: Series, context: Context){
+        fun bindSerie(serie: Series){
             serieName.text = serie.title
             serieDescription.text = serie.description
 
