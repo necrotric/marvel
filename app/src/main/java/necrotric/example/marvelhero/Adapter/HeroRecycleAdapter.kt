@@ -11,9 +11,9 @@ import com.squareup.picasso.Picasso
 import necrotric.example.marvelhero.Models.Hero
 import necrotric.example.marvelhero.R
 
-class HeroRecycleAdapter(val context: Context, var heroes: ArrayList<Hero>, val itemClick: (Hero)-> Unit ) : RecyclerView.Adapter<HeroRecycleAdapter.Holder>() {
+class HeroRecycleAdapter( var heroes: ArrayList<Hero>, val itemClick: (Hero)-> Unit ) : RecyclerView.Adapter<HeroRecycleAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
-       holder.bindHero(heroes[position],context)
+       holder.bindHero(heroes[position])
     }
 
     override fun getItemCount(): Int {
@@ -32,7 +32,7 @@ class HeroRecycleAdapter(val context: Context, var heroes: ArrayList<Hero>, val 
          val heroName = itemView.findViewById<TextView>(R.id.heroListName)
         val heroImage = itemView.findViewById<ImageView>(R.id.heroListImage)
 
-        fun bindHero(hero: Hero, context: Context){
+        fun bindHero(hero: Hero){
             heroName.text = hero.name
             heroDescription.text = hero.description
 

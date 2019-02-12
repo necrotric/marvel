@@ -33,7 +33,7 @@ class HeroBrowseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_hero_browse)
         heroBrowseSpinner.setVisibility(View.INVISIBLE)
 
-        adapter = HeroRecycleAdapter(this, characterList) { heroitem ->
+        adapter = HeroRecycleAdapter( characterList) { heroitem ->
             val heroInfo = Intent(this, HeroMoreInfo::class.java)
             heroInfo.putExtra("SEARCH_VALUE", heroitem.id.toString())
             println(heroitem.id.toString())
