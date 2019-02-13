@@ -77,7 +77,7 @@ class SeriesBrowseFragment: Fragment() {
 
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 @SuppressLint("CheckResult")
-                override fun onItemSelected(parent: AdapterView<*>, alphaView: View, position: Int, id: Long) {
+                override fun onItemSelected(parent: AdapterView<*>, alphaView: View?, position: Int, id: Long) {
                  view.seriesBrowseLoad.setVisibility(View.VISIBLE)
                     Toast.makeText(
                         activity,
