@@ -20,7 +20,7 @@ class HeroSearchFragment: Fragment() {
     lateinit var adapter: HeroRecycleAdapter
     var characterList = ArrayList<Hero>()
     var searchVal: String? = null
-    var count = 0
+    var pagination = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.old_activity_main, container, false)
@@ -35,9 +35,10 @@ class HeroSearchFragment: Fragment() {
         }
 
         view.mainSearchBtn.setOnClickListener {
-            count = 0
+            view.loadingSpinner.setVisibility(View.VISIBLE)
+            pagination = 0
             searchVal = StringConverter.getValIfNull(view.mainSearchField.text.toString())
-            ApiService.service.getCharacters(searchVal, count, 10)
+            ApiService.service.getCharacters(searchVal, pagination, 10)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { wrapper ->
@@ -51,15 +52,17 @@ class HeroSearchFragment: Fragment() {
                     val layoutManager = LinearLayoutManager(activity)
                     heroListView.layoutManager = layoutManager
                     heroListView.setHasFixedSize(true)
+                    view.loadingSpinner.setVisibility(View.INVISIBLE)
                 }
 
         }
 
         view.mainNextBtn.setOnClickListener {
-            count += 10
+            view.loadingSpinner.setVisibility(View.VISIBLE)
+            pagination += 10
             searchVal = StringConverter.getValIfNull(view.mainSearchField.text.toString())
-//            characterList = heroApiMethod(count)
-            ApiService.service.getCharacters(searchVal, count, 10)
+//            characterList = heroApiMethod(pagination)
+            ApiService.service.getCharacters(searchVal, pagination, 10)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { wrapper ->
@@ -76,18 +79,19 @@ class HeroSearchFragment: Fragment() {
                         heroListView.setHasFixedSize(true)
                     }
                     if (characterList.isEmpty()) {
-                        count -= 10
+                        pagination -= 10
                     }
-
+                    view.loadingSpinner.setVisibility(View.INVISIBLE)
                 }
         }
         view.mainBackBtn.setOnClickListener {
-            if (count >= 10) {
-                count -= 10
+            view.loadingSpinner.setVisibility(View.VISIBLE)
+            if (pagination >= 10) {
+                pagination -= 10
             }
             searchVal = StringConverter.getValIfNull(view.mainSearchField.text.toString())
-//            characterList = heroApiMethod(count)
-            ApiService.service.getCharacters(searchVal, count, 10)
+//            characterList = heroApiMethod(pagination)
+            ApiService.service.getCharacters(searchVal, pagination, 10)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { wrapper ->
@@ -97,7 +101,7 @@ class HeroSearchFragment: Fragment() {
                         characterList.add(i)
                     }
                     if (characterList.isEmpty()) {
-                        count += 10
+                        pagination += 10
                         println("im empty as fuck")
                     }
                     if (!characterList.isEmpty()) {
@@ -109,7 +113,7 @@ class HeroSearchFragment: Fragment() {
                         heroListView.setHasFixedSize(true)
                     }
 
-
+                    view.loadingSpinner.setVisibility(View.INVISIBLE)
                 }
         }
         return view

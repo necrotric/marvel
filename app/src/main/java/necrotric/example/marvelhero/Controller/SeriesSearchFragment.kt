@@ -21,7 +21,7 @@ class SeriesSearchFragment: Fragment() {
     lateinit var adapter: SeriesRecycleAdapter
     var seriesNewList = ArrayList<Series>()
     var searchVal: String? = null
-    var count = 0
+    var pagination = 0
 
 
 
@@ -39,9 +39,9 @@ class SeriesSearchFragment: Fragment() {
 
         view.seriesSearchBtn.setOnClickListener {
             view.seriesSrchSpinner.setVisibility(View.VISIBLE)
-            count = 0
+            pagination = 0
             searchVal = StringConverter.getValIfNull(view.seriesSearchField.text.toString())
-            ApiService.service.getSeries(10, count, searchVal)
+            ApiService.service.getSeries(10, pagination, searchVal)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { wrapper ->
@@ -61,9 +61,9 @@ class SeriesSearchFragment: Fragment() {
         }
         view.loadMore.setOnClickListener {
             view.seriesSrchSpinner.setVisibility(View.VISIBLE)
-            count += 10
+            pagination += 10
             searchVal = StringConverter.getValIfNull(view.seriesSearchField.text.toString())
-            ApiService.service.getSeries(10, count, searchVal)
+            ApiService.service.getSeries(10, pagination, searchVal)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { wrapper ->
@@ -80,7 +80,7 @@ class SeriesSearchFragment: Fragment() {
                         seriesListView.setHasFixedSize(true)
                     }
                     if (seriesNewList.isEmpty()) {
-                        count -= 10
+                        pagination -= 10
                     }
                     view.seriesSrchSpinner.setVisibility(View.INVISIBLE)
                 }
@@ -88,11 +88,11 @@ class SeriesSearchFragment: Fragment() {
 
         view.loadPrevious.setOnClickListener {
             view.seriesSrchSpinner.setVisibility(View.VISIBLE)
-            if (count >= 10) {
-                count -= 10
+            if (pagination >= 10) {
+                pagination -= 10
             }
             searchVal = StringConverter.getValIfNull(view.seriesSearchField.text.toString())
-            ApiService.service.getSeries(10, count, searchVal)
+            ApiService.service.getSeries(10, pagination, searchVal)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { wrapper ->
@@ -109,7 +109,7 @@ class SeriesSearchFragment: Fragment() {
                         seriesListView.setHasFixedSize(true)
                     }
                     if (seriesNewList.isEmpty()) {
-                        count += 10
+                        pagination += 10
                     }
                     view.seriesSrchSpinner.setVisibility(View.INVISIBLE)
                 }

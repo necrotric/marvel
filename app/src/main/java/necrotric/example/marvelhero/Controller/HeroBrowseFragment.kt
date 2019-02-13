@@ -25,7 +25,7 @@ class HeroBrowseFragment: Fragment() {
 
     lateinit var adapter: HeroRecycleAdapter
     var characterList = ArrayList<Hero>()
-    var count = 0
+    var pagination = 0
     var searchVal: String? = null
     lateinit var selectedAlphabet: String
 
@@ -85,9 +85,9 @@ class HeroBrowseFragment: Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     selectedAlphabet = alphaChar[position].toString()
-                    count = 0
+                    pagination = 0
                     searchVal = StringConverter.getValIfNull(selectedAlphabet)
-                    ApiService.service.getCharacters(searchVal, count, 10)
+                    ApiService.service.getCharacters(searchVal, pagination, 10)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { wrapper ->
@@ -115,8 +115,8 @@ class HeroBrowseFragment: Fragment() {
             view.heroBrowseNextBtn.setOnClickListener {
                 view.heroBrowseSpinner.setVisibility(View.VISIBLE)
                 searchVal = StringConverter.getValIfNull(selectedAlphabet)
-                count += 10
-                ApiService.service.getCharacters(searchVal, count, 10)
+                pagination += 10
+                ApiService.service.getCharacters(searchVal, pagination, 10)
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { wrapper ->
@@ -133,7 +133,7 @@ class HeroBrowseFragment: Fragment() {
                             browseHeroListView.setHasFixedSize(true)
                         }
                         if (characterList.isEmpty()) {
-                            count -= 10
+                            pagination -= 10
                         }
                         view.heroBrowseSpinner.setVisibility(View.INVISIBLE)
                     }
@@ -141,10 +141,10 @@ class HeroBrowseFragment: Fragment() {
             view.heroBrowseBackBtn.setOnClickListener {
                 view.heroBrowseSpinner.setVisibility(View.VISIBLE)
                 searchVal = StringConverter.getValIfNull(selectedAlphabet)
-                if(count>=10){
-                    count -= 10
+                if(pagination>=10){
+                    pagination -= 10
                 }
-                ApiService.service.getCharacters(searchVal, count, 10)
+                ApiService.service.getCharacters(searchVal, pagination, 10)
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { wrapper ->
@@ -153,7 +153,7 @@ class HeroBrowseFragment: Fragment() {
                             characterList.add(i)
                         }
                         if (characterList.isEmpty()) {
-                            count += 10
+                            pagination += 10
                             println("im empty as fuck")
                         }
                         if (!characterList.isEmpty()) {

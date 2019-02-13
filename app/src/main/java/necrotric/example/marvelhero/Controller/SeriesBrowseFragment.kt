@@ -14,7 +14,6 @@ import android.widget.Spinner
 import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_hero_browse.view.*
 import kotlinx.android.synthetic.main.activity_series_browse.*
 import kotlinx.android.synthetic.main.activity_series_browse.view.*
 import necrotric.example.marvelhero.Adapter.SeriesRecycleAdapter
@@ -25,7 +24,7 @@ import necrotric.example.marvelhero.Services.ApiService
 class SeriesBrowseFragment: Fragment() {
     lateinit var adapter: SeriesRecycleAdapter
     var seriesNewList = ArrayList<Series>()
-    var count = 0
+    var pagination = 0
     var searchVal: String? = null
     lateinit var selectedAlphabet: String
 
@@ -85,9 +84,9 @@ class SeriesBrowseFragment: Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     selectedAlphabet = alphaChar[position].toString()
-                    count = 0
+                    pagination = 0
                     searchVal = StringConverter.getValIfNull(selectedAlphabet)
-                    ApiService.service.getSeries(10, count, searchVal)
+                    ApiService.service.getSeries(10, pagination, searchVal)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { wrapper ->
@@ -113,8 +112,8 @@ class SeriesBrowseFragment: Fragment() {
             view.seriesBrowseNext.setOnClickListener {
                 view.seriesBrowseLoad.setVisibility(View.VISIBLE)
                 searchVal = StringConverter.getValIfNull(selectedAlphabet)
-                count += 10
-                ApiService.service.getSeries(10, count, searchVal)
+                pagination += 10
+                ApiService.service.getSeries(10, pagination, searchVal)
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { wrapper ->
@@ -131,7 +130,7 @@ class SeriesBrowseFragment: Fragment() {
                             seriesBrowseList.setHasFixedSize(true)
                         }
                         if (seriesNewList.isEmpty()) {
-                            count -= 10
+                            pagination -= 10
                         }
                         view.seriesBrowseLoad.setVisibility(View.INVISIBLE)
                     }
@@ -142,10 +141,10 @@ class SeriesBrowseFragment: Fragment() {
             view.seriesBrowsePrevious.setOnClickListener {
                 view.seriesBrowseLoad.setVisibility(View.VISIBLE)
                 searchVal = StringConverter.getValIfNull(selectedAlphabet)
-                if (count >= 10) {
-                    count -= 10
+                if (pagination >= 10) {
+                    pagination -= 10
                 }
-                ApiService.service.getSeries(10, count, searchVal)
+                ApiService.service.getSeries(10, pagination, searchVal)
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { wrapper ->
@@ -162,7 +161,7 @@ class SeriesBrowseFragment: Fragment() {
                             seriesBrowseList.setHasFixedSize(true)
                         }
                         if (seriesNewList.isEmpty()) {
-                            count += 10
+                            pagination += 10
                         }
                         view.seriesBrowseLoad.setVisibility(View.INVISIBLE)
 
